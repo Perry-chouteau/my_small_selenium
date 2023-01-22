@@ -7,12 +7,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 from secret import secretEmail, secretPassword
-# DEPRECATED
-#webdriver = {
-#    "Firefox": webdriver.Firefox(executable_path='./geckodriver'),
-#    "Chrome" : webdriver.Chrome(executable_path='./chromedriver')
-#}
-
 
 sDict = {
     "url": 'https://www.linkedin.com',
@@ -24,7 +18,10 @@ sDict = {
     "value_password": secretPassword,
 
     "onboarding_url": 'https://www.linkedin.com/feed/?trk=onboarding-landing',
-    "profile_url": 'https://www.linkedin.com/in/your_username/'
+    "profile_url": 'https://www.linkedin.com/in/your_username/',
+    "dev_url": "https://www.linkedin.com/search/results/people/?heroEntityKey=urn%3Ali%3Aautocomplete%3A-881884702&keywords=developer&origin=SWITCH_SEARCH_VERTICAL&page=3&position=0&searchId=49908181-d8a7-43d3-9723-ac5e9a9c3570&sid=9TU",
+    "dev_url_begin": "https://www.linkedin.com/search/results/people/?heroEntityKey=urn%3Ali%3Aautocomplete%3A-881884702&keywords=developer&origin=SWITCH_SEARCH_VERTICAL&page=",
+    "dev_url_end": "&position=0&searchId=49908181-d8a7-43d3-9723-ac5e9a9c3570&sid=9TU"
 }
 
 print("BEGIN driver developers")
@@ -61,47 +58,17 @@ search_input.send_keys("developer" + Keys.RETURN)
 print("END search_input developers")
 
 wait = WebDriverWait(driver, 5)
-#print("BEGIN more_result_button developers")
-#more_result_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "app-aware-link")))
-#more_result_button.click()
 
-driver.get("https://www.linkedin.com/search/results/people/?heroEntityKey=urn%3Ali%3Aautocomplete%3A-881884702&keywords=developer&origin=SWITCH_SEARCH_VERTICAL&position=0&searchId=49908181-d8a7-43d3-9723-ac5e9a9c3570&sid=1gZ")
+for i in range(1, 10):
+    driver.get(sDict["dev_url_begin"] + str(i) + sDict["dev_url_end"])
 
-#person_result_button = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "artdeco-pill artdeco-pill--slate artdeco-pill--choice artdeco-pill--2 search-reusables__filter-pill-button\
-#     search-reusables__filter-pill-button")))
-#person_result_button.click()
-#print("END more_result_button developers")
+    wait = WebDriverWait(driver, 20)
+    print("BEGIN search_result developers")
 
-wait = WebDriverWait(driver, 20)
-print("BEGIN search_result developers")
-#search_list = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "reusable-search__entity-result-list")))
-#li_element = wait.until(EC.presence_of_element_located(By.CLASS_NAME, "reusable-search__entity-result-list"))
-#li_elements = driver.find_elements_by_class_name("reusable-search__result-container")
+    li_elements = driver.find_elements(by=By.CLASS_NAME, value='reusable-search__result-container')
 
-li_elements = driver.find_elements(by=By.CLASS_NAME, value='reusable-search__result-container')
-
-#iterate through each elements
-for li_element in li_elements:
-    print(li_element.text)
-
-print("END search_result developers")
-
-print("BEGIN img_result developers")
-#imgs = driver.find_elements(by=By.CLASS_NAME, value='app-aware-link  scale-down')
-#
-#for img in imgs:
-#    print(img.text)
-#print("END img_result developers")
-
-#li_elements = driver.find_elements_by_xpath('//ul[@class="reusable-search__entity-result-list"]/li')
-
-#for li in li_elements:
-#    print(li.text)
-
-# Wait for the page to load
-
-# Navigate to your profile page
-#driver.get(sel_dict["onboarding_url"])
+    #iterate through each elements
+    for li_element in li_elements:
+        print(li_element.text)
 
 driver.quit()
-
